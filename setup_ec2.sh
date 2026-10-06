@@ -7,8 +7,8 @@
 
 set -e
 
-REPO="https://github.com/LowLatencyOrg/Script-de-captura.git"
-PASTA="Script-de-captura"
+REPO="https://github.com/MagnaSync/monitaramento-python-hardware.git"
+PASTA="monitoramento-python-hardware"
 
 MYSQL_USER="ec2"
 MYSQL_PASS="ec2123"
@@ -22,7 +22,7 @@ echo "=========================================="
 # 1. Atualização do sistema
 # --------------------------------------------------
 echo ""
-echo "[1/8] Atualizando o sistema..."
+echo "[1/7] Atualizando o sistema..."
 
 sudo apt update -y
 sudo apt upgrade -y
@@ -30,20 +30,10 @@ sudo apt upgrade -y
 echo "Sistema atualizado com sucesso."
 
 # --------------------------------------------------
-# 2. Instalação do Git
+# 2. Clonando repositório
 # --------------------------------------------------
 echo ""
-echo "[2/8] Instalando Git..."
-
-sudo apt install git -y
-
-echo "Git instalado."
-
-# --------------------------------------------------
-# 3. Clonando repositório
-# --------------------------------------------------
-echo ""
-echo "[3/8] Clonando repositório..."
+echo "[2/7] Clonando repositório..."
 
 if [ -d "$PASTA" ]; then
     echo "Repositório já existe. Removendo versão antiga..."
@@ -55,10 +45,10 @@ git clone "$REPO"
 echo "Repositório clonado com sucesso."
 
 # --------------------------------------------------
-# 4. Instalação e configuração do MySQL
+# 3. Instalação e configuração do MySQL
 # --------------------------------------------------
 echo ""
-echo "[4/8] Instalando MySQL Server..."
+echo "[3/7] Instalando MySQL Server..."
 
 sudo apt install mysql-server -y
 
@@ -106,7 +96,7 @@ echo "MySQL configurado com sucesso."
 # 5. Verificação da porta 3306
 # --------------------------------------------------
 echo ""
-echo "[5/8] Verificando porta 3306..."
+echo "[5/7] Verificando porta 3306..."
 
 if ss -tuln | grep -q ":3306"; then
     echo "OK - Porta 3306 está aberta e o MySQL está escutando."
@@ -116,21 +106,10 @@ else
 fi
 
 # --------------------------------------------------
-# 6. Instalação do Python
+# 6. Instalação das bibliotecas do projeto
 # --------------------------------------------------
 echo ""
-echo "[6/8] Instalando Python..."
-
-sudo apt install -y python3 python3-pip python3-venv
-
-echo "Python instalado:"
-python3 --version
-
-# --------------------------------------------------
-# 7. Instalação das bibliotecas do projeto
-# --------------------------------------------------
-echo ""
-echo "[7/8] Instalando bibliotecas do requirements.txt..."
+echo "[6/7] Instalando bibliotecas do requirements.txt..."
 
 cd "$HOME/$PASTA"
 
@@ -147,10 +126,10 @@ else
 fi
 
 # --------------------------------------------------
-# 8. Finalização
+# 7. Finalização
 # --------------------------------------------------
 echo ""
-echo "[8/8] Verificando serviços..."
+echo "[7/7] Verificando serviços..."
 
 sudo systemctl is-active mysql
 
