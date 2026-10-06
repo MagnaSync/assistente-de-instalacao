@@ -7,7 +7,7 @@
 
 set -e
 
-REPO="https://github.com/MagnaSync/monitaramento-python-hardware.git"
+REPO="https://github.com/MagnaSync/monitoramento-python-hardware.git"
 PASTA="monitoramento-python-hardware"
 
 MYSQL_USER="ec2"
