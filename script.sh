@@ -1,5 +1,8 @@
 #!/bin/bash
 
+PROJETO="aplicao-web-api-WebDataViz"
+SUBPASTA="web-data-viz"
+
 # Atualizar o sistema
 echo "Gostaria de atualizar o SO? [s/n]"
 read get
@@ -38,29 +41,39 @@ docker --version
 echo "Docker instalado com sucesso."
 fi
 
+
 # Clonar o projeto
 echo "Gostaria de clonar o projeto? [s/n]"
 read get
 
 if [ "$get" = "s" ]; then
 
-if [ -d "web-data-viz" ]; then
+if [ -d "$PROJETO" ]; then
 echo "Repositório já existe. Removendo versão antiga..."
-rm -rf "web-data-viz"
+rm -rf "$PROJETO"
 fi
 
-git clone https://github.com/BandTec/web-data-viz.git
+git clone https://github.com/MagnaSync/aplicao-web-api-WebDataViz.git
 echo "Projeto clonado com sucesso."
 fi
 
 #Verifica se ja foi clonado
-if [! -d "web-data-viz"]; then
-echo "Pasta web-data-viz não encontrada. Clone seu projeto primeiro."
+if [! -d "$PROJETO"]; then
+echo "Pasta $PROJETO não encontrada. Clone seu projeto primeiro."
 exit 1
 
 fi
 
-cd web-data-viz || exit 1
+
+
+cd "$PROJETO/$SUBPASTA" || exit 1
+
+
+if [! -f package.json]; then
+  echo "package.json não encontrado em $(pwd)."
+  exit 1
+
+fi
 
 # Criar o Dockerfile
      cat << EOF > Dockerfile
@@ -80,14 +93,13 @@ EOF
     echo "Dockerfile criado com sucesso."
 
 # Criar a imagem Docker
-sudo docker build -t web-data-viz-imagem:1.0 .
+sudo docker build -t aplicao-web-api-webdataviz-imagem:1.0 .
 
 # Executar a API no contêiner
+sudo docker rm  -f site 2>/dev/null
 sudo docker run -d \
---name web-data-viz \
+--name site \
 -p 3333:3333 \
-web-data-viz-imagem:1.0
+aplicao-web-api-webdataviz-imagem:1.0
 
 echo "API iniciada no Docker."
-
-echo "Clonagem e execução do projeto não realizadas."
