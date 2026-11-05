@@ -66,7 +66,7 @@ if [ "$get" = "s" ]; then
     mysql:8
 
   echo "Aguardando o MySQL iniciar..."
-  sleep 40
+  sleep 10
 
   sudo docker ps -a
   sudo docker logs --tail 5 magnasync
@@ -77,7 +77,8 @@ if [ "$get" = "s" ]; then
  if [ "$get" = "s" ]; then
   read -s -p "Senha do root do MySQL: " SENHA_ROOT
   echo
-  sudo docker exec -i -e MYSQL_PWD="$SENHA_ROOT" magnasync mysql -uroot < banco.sql
+  git clone https://github.com/MagnaSync/database-mysql-schema
+  sudo docker exec -i -e MYSQL_PWD="$SENHA_ROOT" magnasync mysql -uroot < database-mysql-schema/magnasync_script.sql
   sudo docker exec -e MYSQL_PWD="$SENHA_ROOT" magnasync mysql -uroot -e "USE magnasync; SHOW TABLES;"
  fi
 fi
